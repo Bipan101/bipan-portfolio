@@ -274,12 +274,14 @@ img {
     }
 
     .col-lg-8 h6 {
+        margin-left: 10px;
         font-size: 18px;
 
     }
 
     .col-lg-8 h1 {
         font-size: 15px;
+        margin-left: 15px;
     }
 
     .iconbox {
@@ -310,8 +312,7 @@ img {
 
     .card-custom-image {
         padding: 10px;
-        /* height:fit-content;
-       width: 250px;; */
+
     }
 
     .card-custom-content h4 {
@@ -328,9 +329,4 @@ img {
     .col-12 p{
         font-size: small;
     }
-
-
-
-
-
 }

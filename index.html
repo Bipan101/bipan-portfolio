@@ -298,16 +298,16 @@
                 <div class="col-lg-8">
                     <form name="submit-to-google-sheet" class="row g-lg-3 gy-3">
                         <div class="form-group col-md-6">
-                            <input type="text" name="Name" class="form-control" placeholder="Enter Your Name">
+                            <input type="text" name="Name" class="form-control" placeholder="Enter Your Name" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="email" name="Email" class="form-control" placeholder="Enter Your Email">
+                            <input type="email" name="Email" class="form-control" placeholder="Enter Your Email" required>
                         </div>
                         <div class="form-group col-12">
                             <input type="Subject" name="Subject" class="form-control" placeholder="Enter Subject">
                         </div>
                         <div class="form-group col-12">
-                            <textarea name="message" row="4" class="form-control" placeholder="Enter Your Message"></textarea>
+                            <textarea name="message" row="4" class="form-control" placeholder="Enter Your Message" required></textarea>
                         </div>
                         <div class="form-group col-12 d-grid">
                             <button type="submit" class="btn btn-brand"> SUBMIT </button>
@@ -368,6 +368,7 @@
             .catch(error => console.error('Error!', error.message))
         })
       </script>
+
 </body>
 
 </html>
