@@ -13,7 +13,7 @@
     --color-base2: #022a30;
     --color-brand: #e0f780;
     --color-brand2: #deff58;
-    --sidebar-width: 240px;
+    --sidebar-width: 230px;
     --font-base: "Bai jamjuree";
 
 }
@@ -22,6 +22,10 @@ body {
     background-color: var(--color-base2);
     color: var(--color-body);
     font-family: var(--font-base), sans-serif;
+ 
+}
+html{
+    overflow-x: hidden;
 }
 
 h1,
@@ -227,25 +231,11 @@ img {
 
 }
 
-/* .footer-content{
-    padding-left: 240px;
-} */
-/* .footer-copyright{ */
-/* background-color: var(--color-base2); */
-/* background-color: transparent;
-    text-align: center;
-    width: 100%;
-    bottom: 0; */
-/* position: fixed; */
-/* position: relative; */
-/* position: -webkit-sticky; */
-/* position: sticky; */
-/* padding-left: var(--sidebar-width);
-} */
+
 
 
 /* FOR MOBILE SCREEN */
-@media only screen and (max-width: 600px) {
+ @media only screen and (max-width: 600px) {
     .navbar-brand span {
         font-size: medium;
     }
@@ -274,7 +264,7 @@ img {
     }
 
     .col-lg-8 h6 {
-        margin-left: 10px;
+        /* margin-left: 10px; */
         font-size: 18px;
 
     }
@@ -329,4 +319,4 @@ img {
     .col-12 p{
         font-size: small;
     }
-}
+} 
