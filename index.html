@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bipan Neupane</title>
+  <script src="https://kit.fontawesome.com/a13344502a.js" crossorigin="anonymous"></script>
+  <!--- favicon -->
+  <link rel="shortcut icon" href="assets/images/BipanLogo.png" type="image/x-icon">
+
+  <!--
+    - custom css link
+  -->
+  <link rel="stylesheet" href="assets/style/style.css">
+  <link rel="stylesheet" href="assets/style/chatbot.css">
+
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ME08661093"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ME08661093');
+</script></head>
+
+<body>
+
+  <!--
+    - #MAIN
+  -->
+
+  <main>
+
+    <!--
+      - #SIDEBAR
+    -->
+
+    <aside class="sidebar" data-sidebar>
+
+      <div class="sidebar-info">
+
+        <figure class="avatar-box">
+          <img src="assets/images/HeadImg.jpg" alt="Bipan Neupane" width="80" style="border-radius: 20%;">
+        </figure>
+
+        <div class="info-content">
+          <h1 class="name" title="Bipan Neupane">Bipan Neupane</h1>
+
+          <p class="title">Web Developer</p>
+
+        </div>
+
+        <button class="info_more-btn" data-sidebar-btn>
+          <span>Show Contacts</span>
+
+          <ion-icon name="chevron-down"></ion-icon>
+        </button>
+
+      </div>
+
+      <div class="sidebar-info_more">
+
+        <div class="separator"></div>
+
+        <ul class="contacts-list">
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Email</p>
+
+              <a href="mailto:info@bipanneupane.com.np" class="contact-link">info@bipanneupane.com.np</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Location</p>
+
+              <address>Kathmandu, NEPAL</address>
+            </div>
+
+          </li>
+
+        </ul>
+
+        <div class="separator"></div>
+
+        <ul class="social-list">
+
+          <li class="social-item">
+            <a href="https://github.com/bipan101" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github"
+                viewBox="0 0 16 16" id="IconChangeColor">
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                  id="mainIconPathAttribute" fill="#ffffff"></path>
+              </svg>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://www.linkedin.com/in/bipan-neupane/" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-linkedin"
+                viewBox="0 0 16 16" id="IconChangeColor">
+                <path
+                  d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"
+                  id="mainIconPathAttribute" fill="#ffffff"></path>
+              </svg>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://g.dev/bipan101" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google"
+                viewBox="0 0 16 16" id="IconChangeColor">
+                <path
+                  d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"
+                  id="mainIconPathAttribute" fill="#ffffff"></path>
+              </svg>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </aside>
+
+    <!--
+      - #main-content
+    -->
+
+    <div class="main-content">
+
+      <!--
+        - #NAVBAR
+      -->
+
+      <nav class="navbar">
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <button class="navbar-link  active" data-nav-link>About</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Resume</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link " data-nav-link>Expertise</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Portfolio</button>
+          </li>
+
+
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Contact</button>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+      <!--
+        - #ABOUT
+      -->
+
+      <article class="about  active" data-page="about">
+
+        <header>
+          <h2 class="h2 article-title">About me</h2>
+        </header>
+
+        <section class="about-text">
+          <p>
+            I'm <b>Bipan Neupane</b>, a passionate <b>Computer Science and Information Technology</b> student at the <b>Asian School of Management and Technology</b>,
+             dedicated to leveraging technology for innovation and community impact.
+
+          </p>
+          <p>
+            Currently, I serve as the <b>Operations Lead</b> at <b>Code for Change, Kathmandu</b> and <b>Ast Event Manager</b> at <b>Pie & AI: Kathmandu</b>,
+            where I organize events that inspire learning and innovation. As a <b>Beta Microsoft Learn Student Ambassador</b> and a volunteer at 
+            <b>Nepal Cloud Professionals</b>, I actively mentor budding tech enthusiasts and contribute to AI and emerging technology communities.
+          </p>
+          <p>
+            With expertise in React.js, Node.js, and JavaScript, I specialize in front-end development while exploring the potential 
+            of AI/ML to drive technological transformation. My journey is fueled by a passion for building impactful solutions,
+            fostering tech communities, and continuous learning.
+
+            Beyond tech, I enjoy skating, stargazing, evening walks, and playing chess, which challenges me to think strategically 
+            and improve continuously.
+<br><br>
+            Let’s connect and innovate together!
+          </p>
+        </section>
+
+
+        <!--
+          - service
+        -->
+
+        <section class="service">
+
+          <h3 class="h3 service-title">What Can I Do For Your Needs</h3>
+          <p class="service-item-text">
+            It is easier to entrust the work to the experts because they are able to provide the best results with
+            reliable quality.
+          </p><br>
+          <ul class="service-list">
+
+
+            <li class="service-item">
+              <div class="service-icon-box">
+                <img src="https://img.icons8.com/3d-fluency/94/null/smartphone.png" alt="mobile app icon" height="60">
+              </div>
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Web apps</h4>
+                <p class="service-item-text">
+                  Professional Website development with the latest technologies and frameworks.
+                </p>
+              </div>
+            </li>
+
+
+            <li class="service-item">
+              <div class="service-icon-box">
+                <img src="https://img.icons8.com/?size=100&id=Sv6BXPMu7xjY&format=png&color=000000" alt="camera icon" height="60">
+              </div>
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">UI/UX Design</h4>
+
+                <p class="service-item-text">
+                  User-friendly and responsive design that enhances user experience and engagement.
+                </p>
+              </div>
+
+            </li>
+          </ul>
+
+        </section>
+
+
+        <!--
+          - testimonials
+        -->
+
+        <section class="testimonials">
+
+          <h3 class="h3 testimonials-title">Certifications</h3>
+
+          <ul class="testimonials-list has-scrollbar">
+
+           
+
+            <!-- GitHub Foundation Certified -->
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="assets/images/imageforgithub.png" alt="GitHub Foundation" width="60" data-testimonials-avatar
+                    data-img="https://www.credly.com/go/bKI942hx1w0zIEhJOGIA0A">
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>GitHub Foundation Certified</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    This helped me to learn Git and GitHub from basics to advanced level.
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <!-- C Programming Certificate Programming Hub -->
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="assets/images/certi_company_logo-3.png" alt="Programming Hub" width="60"
+                    data-testimonials-avatar
+                    data-img="https://programiz.pro/certificates/5A483C8C5848">
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>C++ Programming Certification Course</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Programming Hub Certifies that i have successfully completed <b>C++ Programming Certification
+                      Course</b> and has knowledge of C++ programming
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <!-- Beta MLSA Certificate -->
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="assets/images/BetaMLSA.png" alt="Beta MLSA" width="60"
+                    data-testimonials-avatar
+                    data-img="https://mvp.microsoft.com/studentambassadors/certificate/3c204f14-55a6-45f6-8858-fb49173b60a7">
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Beta Microsoft Student Ambassador</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Beta MLSA. I have received my <b>Beta Swag</b> Kit too from <b>Microsoft</b>
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+          </ul>
+
+        </section>
+
+        <!--
+          - testimonials modal
+        -->
+
+        <div class="modal-container" data-modal-container>
+
+          <div class="overlay" data-overlay></div>
+
+          <section class="testimonials-modal">
+
+            <button class="modal-close-btn" data-modal-close-btn>
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+
+            <div class="modal-img-wrapper">
+              <figure class="modal-avatar-box">
+                <img src="#" alt="Bipan Neupane" width="80" data-modal-img>
+              </figure>
+
+
+              <a data-img-link>
+                <img src="assets/images/icon-quote.svg" alt="quote icon" class="padding">
+              </a>
+            </div>
+
+            <div class="modal-content">
+
+              <h4 class="h3 modal-title" data-modal-title>Bipan Neupane</h4>
+
+              <div data-modal-text>
+                <p>
+                  Bipan was hired to create a corporate identity
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+      <!--
+        - #RESUME
+      -->
+
+      <article class="resume" data-page="resume">
+
+        <header>
+          <h2 class="h2 article-title">Resume</h2>
+        </header>
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Experience</h3>
+          </div>
+
+          <ol class="timeline-list">
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">Document Controller<p class="timeline-text">Marga Darshan Human Resource
+                </p>
+              </h4>
+              <span>Worked 5 months </span>
+              <!-- <p class="timeline-text">
+                As a Document Controller, I facilitate the...</b>
+              </p> -->
+            </li>
+
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">Mentor's Lead<p class="timeline-text">Adhyayan School
+                </p>
+              </h4>
+              <span>2025 Feb 1-14 </span>
+              <p class="timeline-text">
+                •	Selected as Mentors lead for Team ADA and Mentored 2 teams for 14 days.<br>
+                •	Facilitated communication between participants, mentors, and organizers.
+
+              </p>
+            </li>
+          
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">Nepal Largest Hackathon- CODEFEST 2024<p class="timeline-text">Code for Change
+                </p>
+              </h4>
+              <span>2024 Dec 13, 14, & 15 - 3 Days Event</span>
+              <p class="timeline-text">
+                •	Assisted in organizing Nepal's largest 3-day hackathon, coordinating logistics and ensuring smooth event execution.<br>
+                •	Facilitated communication between participants, mentors, and organizers, enhancing the overall hackathon experience.
+
+              </p>
+            </li>
+
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">Volunteer<p class="timeline-text">International AI and Robotics Conference Nepal 2024
+                </p>
+              </h4>
+              <span>2 days event</span>
+              <p class="timeline-text">
+                •	Dedicated Support for Delegates<br>
+                •	Professional Communication and Coordination</p>
+            </li>
+
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">Event Organizer<p class="timeline-text">IT Mela -2024, Code for Change : Kathmandu
+                </p>
+              </h4>
+              <span>One day event </span>
+              <p class="timeline-text">
+                •	Planned and executed college outreach events, increasing attendance by 30%.<br>
+                •	Managed a team of 10 volunteers, delegating tasks and ensuring smooth event operations.<br>
+                •	Coordinated with local organizations to secure sponsorship and resources.
+
+              </p>
+            </li>
+
+          </ol>
+
+        </section>
+       
+
+
+        <section class="skill">
+
+          <h3 class="h3 skills-title">My skills</h3>
+
+          <ul class="skills-list content-card">
+
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">JavaScript</h5>
+                <data value="70">70%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 70%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">React JS</h5>
+                <data value="80">80%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 80%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Python</h5>
+                <data value="85">85%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 85%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Figma</h5>
+                <data value="70">70%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 70%;"></div>
+              </div>
+
+            </li>
+
+
+            <li class="skills-item">
+              <div class="title-wrapper">
+                <h5 class="h5">MS Word, MS PowerPoint, G Docs, G Slides</h5>
+                <data value="100">100%</data>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 100%;"></div>
+              </div>
+            </li>
+
+            <li class="skills-item">
+              <div class="title-wrapper">
+                <h5 class="h5">MS Excel, Google Sheets, </h5>
+                <data value="70">70%</data>
+              </div>
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 70%;"></div>
+              </div>
+            </li>
+
+            <li class="skills-item">
+              <div class="title-wrapper">
+                <h5 class="h5">Git / GitHub</h5>
+                <data value="90">90%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 90%;"></div>
+              </div>
+            </li>
+            <!-- C/C++ -->
+            <li class="skills-item">
+              <div class="title-wrapper">
+                <h5 class="h5">C/C++</h5>
+                <data value="85">85%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 85%;"></div>
+              </div>
+            </li>
+
+  
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+      <article class="expertise" data-page="expertise">
+
+        <header>
+          <h2 class="h2 article-title">Tech Expertise
+          </h2>
+        </header>
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Languages / Frameworks /  Tools </h3>
+          </div>
+
+          <ol class="timeline-list">
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">HTML5
+              </h4>
+              <div id="html5Container" class="buttonContainer"></div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">CSS3
+              </h4>
+              <div id="cssContainer" class="buttonContainer"></div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">JavaScript
+              </h4>
+              <div id="jsContainer" class="buttonContainer"></div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">React JS
+              </h4>
+              <div id="reactContainer" class="buttonContainer"></div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">Python Programming
+              </h4>
+              <div id="pythonContainer" class="buttonContainer"></div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">C/C++ Programming
+              </h4>
+              <div id="cppContainer" class="buttonContainer"></div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">Bootstrap
+              </h4>
+              <div id="bootstrapContainer" class="buttonContainer"></div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">Tailwind CSS
+              </h4>
+              <div id="tailwindContainer" class="buttonContainer"></div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">Figma & Canva
+              </h4>
+              <div id="figmaContainer" class="buttonContainer"></div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="h2 timeline-item-title">Photoshop
+              </h4>
+              <div id="photoshopContainer" class="buttonContainer"></div>
+            </li>
+          </ol>
+        </section>
+      </article>
+
+
+
+
+      <!--
+        - #PORTFOLIO
+      -->
+
+      <article class="portfolio" data-page="portfolio">
+
+        <header>
+          <h2 class="h2 article-title">Portfolio</h2>
+        </header>
+
+        <section class="projects">
+
+          <ul class="filter-list">
+
+            <li class="filter-item">
+              <button class="active" data-filter-btn>All</button>
+            </li>
+
+
+
+          </ul>
+
+          <div class="filter-select-box">
+
+            <button class="filter-select" data-select>
+
+              <div class="select-value" data-selecct-value>Select category</div>
+
+              <div class="select-icon">
+                <ion-icon name="chevron-down"></ion-icon>
+              </div>
+
+            </button>
+
+            <ul class="select-list">
+
+              <li class="select-item">
+                <button data-select-item>All</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Applications</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Web development</button>
+              </li>
+              <li class="select-item">
+                <button data-select-item>Programming-language</button>
+              </li>
+
+            </ul>
+
+          </div>
+
+          <ul class="project-list">
+
+            <li class="project-item  active" data-filter-item data-category="web-applications">
+              <a href="https://github.com/Bipan101/Padha_Nepali" target="_blank">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="assets/images/PadhaNepali.png" alt="Padha Nepali" loading="Wait">
+                </figure>
+
+                <h3 class="project-title">Padha Nepali</h3>
+
+                <p class="project-category">Web App</p>
+
+              </a>
+            </li>
+            <li class="project-item  active" data-filter-item data-category="Extension">
+              <a href="https://github.com/Bipan101/Phishing-Site-Detector" target="_blank">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="assets/images/ExtentionDec.png" alt="Phishing Site Detector" loading="Wait">
+                </figure>
+
+                <h3 class="project-title">Phishing Site Detector</h3>
+
+                <p class="project-category">Extension for Android & IOS</p>
+
+              </a>
+            </li>
+            <li class="project-item  active" data-filter-item data-category="web-applications">
+              <a href="https://github.com/Bipan101/Poetic-phase-generator" target="_blank">
+
+                <figure class="project-img">
+                  <div class="project-item-icon-box">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+
+                  <img src="assets/images/PoeticPhasePic.png" alt="Poetic-phase-generator" loading="Wait">
+                </figure>
+
+                <h3 class="project-title">Poetic-phase-generator</h3>
+
+                <p class="project-category">Web App</p>
+
+              </a>
+            </li>
+
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+      <!--
+        - #CONTACT
+      -->
+
+      <article class="contact" data-page="contact">
+
+        <header>
+          <h2 class="h2 article-title">Get to know me!</h2>
+        </header>
+
+  
+        <section class="contact-form">
+
+          <h3 class="h3 form-title">Contact Form</h3>
+          <form action="https://submit-form.com/OU1iEIFDu" method="POST" class="form" data-form>
+            <div class="input-wrapper">
+              <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
+
+              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
+            </div>
+
+            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
+
+            <button class="form-btn" type="submit" data-form-btn>
+              <ion-icon name="paper-plane"></ion-icon>
+              <span>Send Message</span>
+            </button>
+
+          </form>
+
+        </section>
+
+      </article>
+
+    </div>
+
+  </main>
+
+  <!--
+    - custom js link
+  -->
+  <script src="assets/script/data.js"></script>
+  <script src="assets/script/script.js"></script>
+  <script src="assets/script/chatbot.js"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+<footer class="footer">
+  <div class="footerContainer">
+    <p class="copyright"> Copyright © 2025 Bipan Neupane</p>
+  </div>
+</footer>
+
+</html>
