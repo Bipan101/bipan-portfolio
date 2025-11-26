@@ -791,12 +791,12 @@ main {
 
 /* Hide mobile dropdown on desktop by default */
 .mobile-only {
-  display: none;
+  display: none !important;
 }
 
 /* Show desktop items by default */
 .desktop-only {
-  display: block;
+  display: block !important;
 }
 
 .navbar-dropdown {
