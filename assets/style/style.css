@@ -498,6 +498,20 @@ main {
   transition: color var(--transition-1);
 }
 
+/*-----------------------------------*\
+  #NAVBAR DROPDOWN - Desktop Defaults
+\*-----------------------------------*/
+
+/* Hide mobile dropdown on desktop by default */
+.mobile-only {
+  display: none !important;
+}
+
+/* Show desktop items by default */
+.desktop-only {
+  display: block !important;
+}
+
 /* Mobile optimization for navbar */
 @media (max-width: 450px) {
   /* Hide desktop-only items (Blog, Contact) on mobile */
@@ -788,16 +802,6 @@ main {
 /*-----------------------------------*\
   #NAVBAR DROPDOWN
 \*-----------------------------------*/
-
-/* Hide mobile dropdown on desktop by default */
-.mobile-only {
-  display: none !important;
-}
-
-/* Show desktop items by default */
-.desktop-only {
-  display: block !important;
-}
 
 .navbar-dropdown {
   position: relative;
