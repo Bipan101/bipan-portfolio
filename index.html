@@ -14,7 +14,6 @@
     - custom css link
   -->
   <link rel="stylesheet" href="assets/style/style.css">
-  <link rel="stylesheet" href="assets/style/chatbot.css">
 
   <!--
     - google font link
@@ -177,10 +176,28 @@
             <button class="navbar-link" data-nav-link>Portfolio</button>
           </li>
 
+          <!-- Desktop only items -->
+          <li class="navbar-item desktop-only">
+            <button class="navbar-link" data-nav-link>Blog</button>
+          </li>
 
-
-          <li class="navbar-item">
+          <li class="navbar-item desktop-only">
             <button class="navbar-link" data-nav-link>Contact</button>
+          </li>
+
+          <!-- Mobile only dropdown -->
+          <li class="navbar-item navbar-dropdown mobile-only">
+            <button class="navbar-link" data-dropdown-btn>
+              More
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item">
+                <button class="dropdown-link" data-nav-link>Blog</button>
+              </li>
+              <li class="dropdown-item">
+                <button class="dropdown-link" data-nav-link>Contact</button>
+              </li>
+            </ul>
           </li>
 
         </ul>
@@ -774,6 +791,54 @@
 
 
       <!--
+        - #BLOG
+      -->
+
+      <article class="blog" data-page="blog">
+
+        <header>
+          <h2 class="h2 article-title">Blog</h2>
+        </header>
+
+        <section class="blog-posts">
+
+          <div class="blog-intro">
+            <p class="blog-text">
+              Welcome to my blog! Here I share my thoughts, experiences, and tutorials on web development, 
+              AI/ML, community building, and my journey as a developer. 
+            </p>
+          </div>
+
+          <!-- Loading State -->
+          <div id="blog-loading" class="blog-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading latest posts...</p>
+          </div>
+
+          <!-- Error State -->
+          <div id="blog-error" class="blog-error" style="display: none;">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <p>Unable to load blog posts. Please visit my <a href="https://hashnode.com/@bipan101" target="_blank">Hashnode blog</a> directly.</p>
+          </div>
+
+          <!-- Blog Posts Container -->
+          <ul class="blog-posts-list" id="blog-posts-list">
+            <!-- Posts will be dynamically inserted here -->
+          </ul>
+
+          <div class="blog-footer">
+            <a href="https://hashnode.com/@bipan101" target="_blank" class="blog-view-all">
+              <span>View All Posts on Hashnode</span>
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </a>
+          </div>
+
+        </section>
+
+      </article>
+
+
+      <!--
         - #CONTACT
       -->
 
@@ -816,7 +881,7 @@
   -->
   <script src="assets/script/data.js"></script>
   <script src="assets/script/script.js"></script>
-  <script src="assets/script/chatbot.js"></script>
+  <script src="assets/script/blog.js"></script>
 
   <!--
     - ionicon link

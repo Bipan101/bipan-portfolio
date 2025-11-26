@@ -134,17 +134,63 @@ for (let i = 0; i < formInputs.length; i++) {
 const navigationLinks = document.querySelectorAll("[data-nav-link]");
 const pages = document.querySelectorAll("[data-page]");
 
-// add event to all nav link
+// Mobile dropdown functionality
+const dropdownBtn = document.querySelector("[data-dropdown-btn]");
+const dropdownMenu = document.querySelector(".navbar-dropdown");
+
+// Toggle dropdown menu on mobile
+if (dropdownBtn && dropdownMenu) {
+  // Click on More button
+  dropdownBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const isActive = dropdownMenu.classList.contains("active");
+    dropdownMenu.classList.toggle("active");
+    
+    console.log("Dropdown toggled:", !isActive); // Debug
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function(e) {
+    if (!dropdownMenu.contains(e.target) && !dropdownBtn.contains(e.target)) {
+      dropdownMenu.classList.remove("active");
+    }
+  });
+
+  // Prevent dropdown menu clicks from bubbling
+  const dropdownMenuEl = dropdownMenu.querySelector(".dropdown-menu");
+  if (dropdownMenuEl) {
+    dropdownMenuEl.addEventListener("click", function(e) {
+      e.stopPropagation();
+    });
+  }
+} else {
+  console.error("Dropdown not found:", { btn: dropdownBtn, menu: dropdownMenu }); // Debug
+}
+
+// add event to all nav link (including dropdown links)
 for (let i = 0; i < navigationLinks.length; i++) {
   navigationLinks[i].addEventListener("click", function () {
+    // Close dropdown after selecting an item
+    if (dropdownMenu) {
+      dropdownMenu.classList.remove("active");
+    }
+
+    // Remove active class from all links
+    for (let j = 0; j < navigationLinks.length; j++) {
+      navigationLinks[j].classList.remove("active");
+    }
+
+    // Add active class to clicked link
+    this.classList.add("active");
+
     for (let i = 0; i < pages.length; i++) {
       if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
         pages[i].classList.add("active");
-        navigationLinks[i].classList.add("active");
         window.scrollTo(0, 0);
       } else {
         pages[i].classList.remove("active");
-        navigationLinks[i].classList.remove("active");
       }
     }
   });
