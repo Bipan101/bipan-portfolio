@@ -212,17 +212,13 @@ function escapeHtml(text) {
 
 // Create blog post card HTML
 function createBlogCard(post) {
-  const { title, brief, coverImage, publishedAt, readTimeInMinutes, url, tags } = post;
+  const { title, coverImage, url } = post;
   
   // Sanitize all user-generated content
   const safeTitle = escapeHtml(title);
-  const safeBrief = escapeHtml(brief);
   
   // Use cover image if available, otherwise use a placeholder
   const imageUrl = coverImage?.url || 'https://cdn.hashnode.com/res/hashnode/image/upload/v1683525272582/MB5H4bOD3.png';
-  
-  // Get first 2-3 tags
-  const displayTags = tags.slice(0, 3);
   
   return `
     <li class="blog-post-item">
@@ -232,29 +228,7 @@ function createBlogCard(post) {
         </figure>
 
         <div class="blog-content">
-          <div class="blog-meta">
-            <p class="blog-category">
-              <ion-icon name="calendar-outline"></ion-icon>
-              <time datetime="${publishedAt}">${formatDate(publishedAt)}</time>
-            </p>
-            <span class="dot"></span>
-            <p class="blog-category">
-              <ion-icon name="time-outline"></ion-icon>
-              <span>${readTimeInMinutes} min read</span>
-            </p>
-          </div>
-
           <h3 class="h3 blog-item-title">${safeTitle}</h3>
-
-          <p class="blog-text">
-            ${safeBrief}
-          </p>
-
-          ${displayTags.length > 0 ? `
-            <div class="blog-tags">
-              ${displayTags.map(tag => `<span class="blog-tag">#${escapeHtml(tag.name)}</span>`).join('')}
-            </div>
-          ` : ''}
         </div>
       </a>
     </li>
@@ -266,6 +240,9 @@ function displayBlogPosts(posts) {
   const blogList = document.getElementById('blog-posts-list');
   const loadingElement = document.getElementById('blog-loading');
   const errorElement = document.getElementById('blog-error');
+
+  console.log('Displaying posts:', posts);
+  console.log('Total posts to display:', posts.length);
 
   // Hide loading
   if (loadingElement) {
@@ -285,8 +262,19 @@ function displayBlogPosts(posts) {
     return;
   }
 
-  // Display posts
-  blogList.innerHTML = posts.map(post => createBlogCard(post)).join('');
+  // Display all posts - map each post to HTML
+  try {
+    const postsHTML = posts.map((post, index) => {
+      console.log(`Creating card for post ${index + 1}:`, post.title);
+      return createBlogCard(post);
+    }).join('');
+    
+    blogList.innerHTML = postsHTML;
+    console.log('Successfully rendered', posts.length, 'blog posts');
+  } catch (error) {
+    console.error('Error rendering blog posts:', error);
+    showError();
+  }
 }
 
 // Handle error state
@@ -334,8 +322,38 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   // Check if blog is already active on page load
-  const activePage = document.querySelector('[data-page].active');
-  if (activePage && activePage.dataset.page === 'blog') {
-    initializeBlog();
-  }
+  // Use a small delay to ensure DOM is fully ready
+  setTimeout(() => {
+    const activePage = document.querySelector('[data-page].active');
+    if (activePage && activePage.dataset.page === 'blog') {
+      initializeBlog();
+    }
+  }, 100);
 });
+
+// Also initialize immediately when the blog page becomes visible
+// This handles the case when navigating to blog via URL hash or direct navigation
+if (typeof MutationObserver !== 'undefined') {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        const target = mutation.target;
+        if (target.dataset.page === 'blog' && target.classList.contains('active')) {
+          // Check if posts are already loaded
+          const blogList = document.getElementById('blog-posts-list');
+          if (blogList && blogList.children.length === 0) {
+            initializeBlog();
+          }
+        }
+      }
+    });
+  });
+  
+  // Start observing after DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const blogPage = document.querySelector('[data-page="blog"]');
+    if (blogPage) {
+      observer.observe(blogPage, { attributes: true });
+    }
+  });
+}
