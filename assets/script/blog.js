@@ -72,6 +72,9 @@ async function fetchHashnodePosts() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       },
       body: JSON.stringify({
         query: GET_PUBLICATION_QUERY,
@@ -107,6 +110,9 @@ async function fetchHashnodePosts() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       },
       body: JSON.stringify({
         query: GET_POSTS_QUERY,
@@ -136,7 +142,9 @@ async function fetchHashnodePosts() {
       return await fetchPostsAlternative(host);
     }
     
-    return posts.map(edge => edge.node);
+    // Extract posts and sort by publishedAt date (newest first)
+    const postsArray = posts.map(edge => edge.node);
+    return postsArray.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
   } catch (error) {
     console.error('Error fetching Hashnode posts:', error);
     throw error;
@@ -177,6 +185,9 @@ async function fetchPostsAlternative(host) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       },
       body: JSON.stringify({
         query: simpleQuery,
@@ -297,24 +308,54 @@ async function initializeBlog() {
   const blogPage = document.querySelector('[data-page="blog"]');
   
   if (!blogPage) {
+    console.log('Blog page not found in DOM');
     return;
   }
 
+  console.log('=== Initializing Blog ===');
+  console.log('Fetching posts for username:', HASHNODE_USERNAME);
+
   try {
     const posts = await fetchHashnodePosts();
+    console.log('=== Posts fetched successfully ===');
+    console.log('Posts count:', posts.length);
+    if (posts.length > 0) {
+      console.log('First post:', posts[0]);
+    }
     displayBlogPosts(posts);
   } catch (error) {
+    console.error('=== Blog initialization failed ===');
+    console.error('Error details:', error);
     showError();
   }
 }
 
+// Add manual refresh function
+window.refreshBlogPosts = function() {
+  console.log('Manual refresh triggered');
+  const blogList = document.getElementById('blog-posts-list');
+  const loadingElement = document.getElementById('blog-loading');
+  
+  // Reset state
+  if (blogList) blogList.innerHTML = '';
+  if (loadingElement) loadingElement.style.display = 'flex';
+  
+  // Re-initialize
+  initializeBlog();
+}
+
 // Listen for navigation to blog page
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('=== Blog script loaded ===');
+  
   const navigationLinks = document.querySelectorAll('[data-nav-link]');
+  console.log('Found navigation links:', navigationLinks.length);
   
   navigationLinks.forEach(link => {
     link.addEventListener('click', function() {
+      console.log('Navigation clicked:', this.innerHTML);
       if (this.innerHTML.toLowerCase() === 'blog') {
+        console.log('Blog navigation clicked, initializing...');
         // Small delay to ensure page transition completes
         setTimeout(initializeBlog, 100);
       }
@@ -325,7 +366,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Use a small delay to ensure DOM is fully ready
   setTimeout(() => {
     const activePage = document.querySelector('[data-page].active');
+    console.log('Active page on load:', activePage?.dataset?.page);
     if (activePage && activePage.dataset.page === 'blog') {
+      console.log('Blog page is active on load, initializing...');
       initializeBlog();
     }
   }, 100);
