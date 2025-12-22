@@ -176,7 +176,7 @@
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Portfolio</button>
+            <button class="navbar-link" data-nav-link>Projects</button>
           </li>
 
           <!-- Desktop only items -->
@@ -230,14 +230,15 @@
             <b>Nepal Cloud Professionals</b>, I actively mentor budding tech enthusiasts and contribute to AI and emerging technology communities.
           </p>
           <p>
-            With expertise in React.js, Node.js, and JavaScript, I specialize in front-end development while exploring the potential 
-            of AI/ML to drive technological transformation. My journey is fueled by a passion for building impactful solutions,
+            With expertise in React.js, Node.js, JavaScript, Python, and Django, I specialize in front-end and backend development while expanding into 
+            machine learning engineering to build intelligent, production-ready solutions. My journey is fueled by a passion for building impactful solutions,
             fostering tech communities, and continuous learning.
+            
 <br>
-            Beyond tech, I enjoy skating, stargazing, evening walks, and playing chess, which challenges me to think strategically 
-            and improve continuously.
+           Off the keyboard, you’ll find me skating, stargazing, taking long walks, or sharpening strategy over chess. Always curious, always learning, 
+
 <br><br>
-            Let’s connect and innovate together!
+            let’s build something impactful together!
           </p>
         </section>
 
@@ -250,26 +251,38 @@
 
           <h3 class="h3 service-title">What Can I Do For Your Needs</h3>
           <p class="service-item-text">
-            It is easier to entrust the work to the experts because they are able to provide the best results with
-            reliable quality.
+            Rely on a specialist for dependable, high-quality results.
           </p><br>
           <ul class="service-list">
 
 
-            <li class="service-item">
+            <li class="service-item" data-service-item="0">
               <div class="service-icon-box">
-                <img src="https://img.icons8.com/3d-fluency/94/null/smartphone.png" alt="mobile app icon" height="60">
+                <img src="https://img.icons8.com/color/96/artificial-intelligence.png" alt="ml icon" height="60">
               </div>
               <div class="service-content-box">
-                <h4 class="h4 service-item-title">Web apps</h4>
+                <h4 class="h4 service-item-title">ML Engineering</h4>
                 <p class="service-item-text">
-                  Professional Website development with the latest technologies and frameworks.
+                  Data pipelines, model experimentation, and Python/Django API deployments that bring AI features to production.
                 </p>
               </div>
             </li>
 
 
-            <li class="service-item">
+            <li class="service-item" data-service-item="1">
+              <div class="service-icon-box">
+                <img src="https://img.icons8.com/color/96/web-design.png" alt="web app icon" height="60">
+              </div>
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Web apps</h4>
+                <p class="service-item-text">
+                  Scalable web platforms built with modern JavaScript stacks, optimized performance, and maintainable architectures.
+                </p>
+              </div>
+            </li>
+
+
+            <li class="service-item" data-service-item="2">
               <div class="service-icon-box">
                 <img src="https://img.icons8.com/?size=100&id=Sv6BXPMu7xjY&format=png&color=000000" alt="camera icon" height="60">
               </div>
@@ -277,12 +290,18 @@
                 <h4 class="h4 service-item-title">UI/UX Design</h4>
 
                 <p class="service-item-text">
-                  User-friendly and responsive design that enhances user experience and engagement.
+                  User-friendly and responsive design systems paired with brand-ready graphics and marketing visuals that enhance engagement.
                 </p>
               </div>
 
             </li>
           </ul>
+          
+          <div class="service-dots">
+            <span class="service-dot active" data-dot="0"></span>
+            <span class="service-dot" data-dot="1"></span>
+            <span class="service-dot" data-dot="2"></span>
+          </div>
 
         </section>
 
@@ -293,7 +312,17 @@
 
         <section class="testimonials">
 
-          <h3 class="h3 testimonials-title">Certifications</h3>
+          <div class="testimonials-heading">
+            <h3 class="h3 testimonials-title">Certifications</h3>
+            <div class="testimonials-controls" aria-label="Scroll certifications">
+              <button class="testimonials-nav-btn" type="button" data-scroll-btn="prev" aria-label="Scroll certifications left">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+              </button>
+              <button class="testimonials-nav-btn" type="button" data-scroll-btn="next" aria-label="Scroll certifications right">
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
 
           <ul class="testimonials-list has-scrollbar">
 
@@ -356,6 +385,48 @@
                 <div class="testimonials-text" data-testimonials-text>
                   <p>
                     Beta MLSA. I have received my <b>Beta Swag</b> Kit too from <b>Microsoft</b>
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <!-- Kaggle Intro to Programming -->
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="assets/images/kaggle.svg" alt="Kaggle Intro to Programming" width="60"
+                    data-testimonials-avatar
+                    data-img="https://www.kaggle.com/learn/certification/anonymousshjfvboef/intro-to-programming">
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Kaggle Intro to Programming</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Completed Kaggle's Intro to Programming track, covering Python fundamentals, control flow, and problem solving for data and ML workflows.
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <!-- Postman API Fundamentals Student Expert -->
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="assets/images/postman-logo.png" alt="Postman Student Expert" width="60"
+                    data-testimonials-avatar
+                    data-img="https://badges.parchment.com/public/assertions/sGYvLYhtSMODdn7QJ2A8UQ?identity__email=bipanneupane18@gmail.com">
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Postman API Fundamentals Student Expert</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    Proficient in essential skills for consuming APIs in Postman and applications.
                   </p>
                 </div>
 
@@ -677,13 +748,13 @@
 
 
       <!--
-        - #PORTFOLIO
+        - #PROJECTS
       -->
 
-      <article class="portfolio" data-page="portfolio">
+      <article class="portfolio" data-page="projects">
 
         <header>
-          <h2 class="h2 article-title">Portfolio</h2>
+          <h2 class="h2 article-title">Projects</h2>
         </header>
 
         <section class="projects">
@@ -884,6 +955,9 @@
   -->
   <script src="assets/script/data.js"></script>
   <script src="assets/script/script.js"></script>
+  <script>
+    window.HASHNODE_WORKER_ENDPOINT = 'https://my-worker.bipan-neupane0101.workers.dev/posts';
+  </script>
   <script src="assets/script/blog.js"></script>
 
   <!--

@@ -5,11 +5,6 @@ const elementToggleFunc = function (elem) {
   elem.classList.toggle("active");
 };
 
-  document.addEventListener('contextmenu', event => event.preventDefault());
-  document.onkeydown = function(e) {
-    if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'c')) return false;
-  };
-
 // sidebar variables
 const sidebar = document.querySelector("[data-sidebar]");
 const sidebarBtn = document.querySelector("[data-sidebar-btn]");
@@ -25,14 +20,14 @@ const modalContainer = document.querySelector("[data-modal-container]");
 const modalCloseBtn = document.querySelector("[data-modal-close-btn]");
 const overlay = document.querySelector("[data-overlay]");
 const testimonialImg = document.querySelector("[data-testimonials-avatar]");
+const testimonialsList = document.querySelector(".testimonials-list");
+const testimonialScrollButtons = document.querySelectorAll("[data-scroll-btn]");
 
 // modal variable
 const modalImg = document.querySelector("[data-modal-img]");
 const quoteImg = document.querySelector("[data-img-link]");
 const modalTitle = document.querySelector("[data-modal-title]");
 const modalText = document.querySelector("[data-modal-text]");
-
-console.log(testimonialImg.getAttribute("data-img"));
 
 // modal toggle function
 const testimonialsModalFunc = function () {
@@ -62,6 +57,16 @@ for (let i = 0; i < testimonialsItem.length; i++) {
 // add click event to modal close button
 modalCloseBtn.addEventListener("click", testimonialsModalFunc);
 overlay.addEventListener("click", testimonialsModalFunc);
+
+if (testimonialsList && testimonialScrollButtons.length) {
+  testimonialScrollButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const direction = btn.dataset.scrollBtn === "next" ? 1 : -1;
+      const scrollAmount = testimonialsList.clientWidth * 0.95;
+      testimonialsList.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+    });
+  });
+}
 
 // custom select variables
 const select = document.querySelector("[data-select]");
@@ -322,5 +327,32 @@ function createButtonListWithIcon(buttonNames, containerId) {
     button.textContent = item.name;
     button.appendChild(icon);
     container.appendChild(button);
+  });
+}
+
+// Service section dots indicator for mobile
+const serviceList = document.querySelector(".service-list");
+const serviceDots = document.querySelectorAll(".service-dot");
+const serviceItems = document.querySelectorAll(".service-item");
+
+if (serviceList && serviceDots.length && serviceItems.length) {
+  // Update dots on scroll
+  serviceList.addEventListener("scroll", () => {
+    const scrollLeft = serviceList.scrollLeft;
+    const itemWidth = serviceItems[0].offsetWidth + 15; // width + gap
+    const activeIndex = Math.round(scrollLeft / itemWidth);
+    
+    serviceDots.forEach((dot, index) => {
+      dot.classList.toggle("active", index === activeIndex);
+    });
+  });
+  
+  // Click on dots to scroll
+  serviceDots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const index = parseInt(dot.dataset.dot);
+      const itemWidth = serviceItems[0].offsetWidth + 15;
+      serviceList.scrollTo({ left: index * itemWidth, behavior: "smooth" });
+    });
   });
 }

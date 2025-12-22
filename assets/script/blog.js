@@ -3,17 +3,26 @@
 
 const HASHNODE_USERNAME = 'bipan101';
 const HASHNODE_API = 'https://gql.hashnode.com';
+const HASHNODE_WORKER_ENDPOINT =
+  (typeof window !== 'undefined' && window.HASHNODE_WORKER_ENDPOINT)
+  || (typeof document !== 'undefined'
+    ? document.querySelector('meta[name="hashnode-worker-endpoint"]')?.getAttribute('content')
+    : null)
+  || (typeof window !== 'undefined' && ['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? 'http://127.0.0.1:8787/posts'
+    : null);
 
-// First, get the user's publication host
+// First, get all of the user's publications
 const GET_PUBLICATION_QUERY = `
   query GetUserPublication($username: String!) {
     user(username: $username) {
-      publications(first: 1) {
+      publications(first: 10) {
         edges {
           node {
             id
             title
             url
+            isTeam
           }
         }
       }
@@ -27,7 +36,7 @@ const GET_POSTS_QUERY = `
     publication(host: $host) {
       isTeam
       title
-      posts(first: 20) {
+      posts(first: 50) {
         pageInfo {
           hasNextPage
           endCursor
@@ -64,10 +73,49 @@ const GET_POSTS_QUERY = `
   }
 `;
 
-// Fetch blog posts from Hashnode
-async function fetchHashnodePosts() {
+// Fetch blog posts with the Cloudflare Worker proxy so the PAT stays server-side
+async function fetchHashnodePostsViaWorker() {
+  if (!HASHNODE_WORKER_ENDPOINT) {
+    throw new Error('Hashnode worker endpoint is not configured.');
+  }
+
   try {
-    // First, get the user's publication
+    const endpointUrl = new URL(HASHNODE_WORKER_ENDPOINT, window.location.origin);
+
+    if (!endpointUrl.searchParams.has('username') && HASHNODE_USERNAME) {
+      endpointUrl.searchParams.set('username', HASHNODE_USERNAME);
+    }
+
+    const response = await fetch(endpointUrl.toString(), {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+      credentials: 'omit',
+      mode: 'cors'
+    });
+
+    if (!response.ok) {
+      throw new Error(`Worker responded with status ${response.status}`);
+    }
+
+    const payload = await response.json();
+
+    if (!Array.isArray(payload.posts)) {
+      throw new Error('Worker response is missing the posts array.');
+    }
+
+    return payload.posts;
+  } catch (error) {
+    console.error('Hashnode worker fetch failed:', error);
+    throw error;
+  }
+}
+
+// Fetch blog posts from Hashnode directly (no proxy)
+async function fetchHashnodePostsDirect() {
+  try {
+    // First, get all of the user's publications
     const pubResponse = await fetch(HASHNODE_API, {
       method: 'POST',
       headers: {
@@ -85,70 +133,78 @@ async function fetchHashnodePosts() {
     });
 
     const pubData = await pubResponse.json();
-    console.log('Publication data:', pubData); // Debug log
     
     if (pubData.errors) {
       console.error('GraphQL errors:', pubData.errors);
       throw new Error('GraphQL Error');
     }
 
-    const publicationEdge = pubData.data?.user?.publications?.edges?.[0];
+    const publicationEdges = pubData.data?.user?.publications?.edges || [];
     
-    if (!publicationEdge) {
-      console.log('No publication found for user');
+    if (publicationEdges.length === 0) {
       return [];
     }
 
-    // Extract the host from the publication URL
-    const publicationUrl = publicationEdge.node.url;
-    const host = new URL(publicationUrl).hostname;
-    
-    console.log('Publication host:', host); // Debug log
+    // Fetch posts from ALL publications
+    const allPostsPromises = publicationEdges.map(async (publicationEdge) => {
+      const publicationUrl = publicationEdge.node.url;
+      const host = new URL(publicationUrl).hostname;
 
-    // Now fetch posts from the publication
-    const postsResponse = await fetch(HASHNODE_API, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-      },
-      body: JSON.stringify({
-        query: GET_POSTS_QUERY,
-        variables: {
-          host: host
-        }
-      })
+      // Fetch posts from this publication
+      const postsResponse = await fetch(HASHNODE_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        body: JSON.stringify({
+          query: GET_POSTS_QUERY,
+          variables: {
+            host: host
+          }
+        })
+      });
+
+      const postsData = await postsResponse.json();
+      
+      if (postsData.errors) {
+        console.error('GraphQL errors for', host, ':', postsData.errors);
+        return [];
+      }
+
+      const posts = postsData.data?.publication?.posts?.edges || [];
+      
+      return posts.map(edge => edge.node);
     });
 
-    const postsData = await postsResponse.json();
-    console.log('Posts data:', postsData); // Debug log
-    console.log('Full posts structure:', JSON.stringify(postsData, null, 2)); // Detailed debug
+    // Wait for all publications to be fetched
+    const allPostsArrays = await Promise.all(allPostsPromises);
     
-    if (postsData.errors) {
-      console.error('GraphQL errors:', postsData.errors);
-      throw new Error('GraphQL Error');
-    }
-
-    const posts = postsData.data?.publication?.posts?.edges || [];
-    console.log('Extracted posts array:', posts); // Debug extracted posts
-    console.log('Number of posts found:', posts.length); // Count
+    // Flatten all posts into a single array
+    const allPosts = allPostsArrays.flat();
     
-    // If no posts found, try alternative method
-    if (posts.length === 0) {
-      console.log('No posts found via GraphQL, trying alternative...');
-      // Try fetching via RSS/alternative
-      return await fetchPostsAlternative(host);
-    }
-    
-    // Extract posts and sort by publishedAt date (newest first)
-    const postsArray = posts.map(edge => edge.node);
-    return postsArray.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+    // Sort by publishedAt date (newest first)
+    const sortedPosts = allPosts.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+    return sortedPosts;
   } catch (error) {
     console.error('Error fetching Hashnode posts:', error);
     throw error;
   }
+}
+
+// Unified fetch helper that prefers the worker proxy but can fall back to direct calls
+async function fetchHashnodePosts() {
+  if (HASHNODE_WORKER_ENDPOINT) {
+    try {
+      return await fetchHashnodePostsViaWorker();
+    } catch (workerError) {
+      console.warn('Worker fetch failed. Falling back to direct Hashnode request.', workerError);
+    }
+  }
+
+  return fetchHashnodePostsDirect();
 }
 
 // Alternative fetch method using Hashnode's RSS feed
@@ -196,7 +252,6 @@ async function fetchPostsAlternative(host) {
     });
     
     const data = await response.json();
-    console.log('Alternative method response:', data);
     
     const posts = data.data?.publication?.posts?.edges || [];
     return posts.map(edge => edge.node);
@@ -223,22 +278,38 @@ function escapeHtml(text) {
 
 // Create blog post card HTML
 function createBlogCard(post) {
-  const { title, coverImage, url } = post;
+  const {
+    title,
+    coverImage,
+    url,
+    brief,
+    subtitle,
+    publishedAt,
+    readTimeInMinutes
+  } = post;
   
-  // Sanitize all user-generated content
   const safeTitle = escapeHtml(title);
-  
-  // Use cover image if available, otherwise use a placeholder
+  const safeUrl = escapeHtml(url);
   const imageUrl = coverImage?.url || 'https://cdn.hashnode.com/res/hashnode/image/upload/v1683525272582/MB5H4bOD3.png';
+  const safeImage = escapeHtml(imageUrl);
+  const formattedDate = publishedAt ? formatDate(publishedAt) : '';
+  const readTimeLabel = readTimeInMinutes ? `${readTimeInMinutes} min read` : '';
+  const dateAttr = publishedAt ? `datetime="${escapeHtml(publishedAt)}"` : '';
+  
+  const metaParts = [
+    formattedDate ? `<time ${dateAttr}>${formattedDate}</time>` : '',
+    readTimeLabel ? `<span class="blog-read-time">${escapeHtml(readTimeLabel)}</span>` : ''
+  ].filter(Boolean).join('<span class="blog-meta-dot"></span>');
   
   return `
     <li class="blog-post-item">
-      <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">
+      <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">
         <figure class="blog-banner-box">
-          <img src="${escapeHtml(imageUrl)}" alt="${safeTitle}" loading="lazy">
+          <img src="${safeImage}" alt="${safeTitle}" loading="lazy">
         </figure>
 
         <div class="blog-content">
+          ${metaParts ? `<div class="blog-meta">${metaParts}</div>` : ''}
           <h3 class="h3 blog-item-title">${safeTitle}</h3>
         </div>
       </a>
@@ -251,9 +322,6 @@ function displayBlogPosts(posts) {
   const blogList = document.getElementById('blog-posts-list');
   const loadingElement = document.getElementById('blog-loading');
   const errorElement = document.getElementById('blog-error');
-
-  console.log('Displaying posts:', posts);
-  console.log('Total posts to display:', posts.length);
 
   // Hide loading
   if (loadingElement) {
@@ -275,13 +343,12 @@ function displayBlogPosts(posts) {
 
   // Display all posts - map each post to HTML
   try {
-    const postsHTML = posts.map((post, index) => {
-      console.log(`Creating card for post ${index + 1}:`, post.title);
+    const postsHTML = posts.map((post) => {
       return createBlogCard(post);
     }).join('');
     
     blogList.innerHTML = postsHTML;
-    console.log('Successfully rendered', posts.length, 'blog posts');
+    
   } catch (error) {
     console.error('Error rendering blog posts:', error);
     showError();
@@ -308,31 +375,20 @@ async function initializeBlog() {
   const blogPage = document.querySelector('[data-page="blog"]');
   
   if (!blogPage) {
-    console.log('Blog page not found in DOM');
     return;
   }
 
-  console.log('=== Initializing Blog ===');
-  console.log('Fetching posts for username:', HASHNODE_USERNAME);
-
   try {
     const posts = await fetchHashnodePosts();
-    console.log('=== Posts fetched successfully ===');
-    console.log('Posts count:', posts.length);
-    if (posts.length > 0) {
-      console.log('First post:', posts[0]);
-    }
     displayBlogPosts(posts);
   } catch (error) {
-    console.error('=== Blog initialization failed ===');
-    console.error('Error details:', error);
+    console.error('Blog initialization failed:', error);
     showError();
   }
 }
 
 // Add manual refresh function
 window.refreshBlogPosts = function() {
-  console.log('Manual refresh triggered');
   const blogList = document.getElementById('blog-posts-list');
   const loadingElement = document.getElementById('blog-loading');
   
@@ -346,16 +402,11 @@ window.refreshBlogPosts = function() {
 
 // Listen for navigation to blog page
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('=== Blog script loaded ===');
-  
   const navigationLinks = document.querySelectorAll('[data-nav-link]');
-  console.log('Found navigation links:', navigationLinks.length);
   
   navigationLinks.forEach(link => {
     link.addEventListener('click', function() {
-      console.log('Navigation clicked:', this.innerHTML);
       if (this.innerHTML.toLowerCase() === 'blog') {
-        console.log('Blog navigation clicked, initializing...');
         // Small delay to ensure page transition completes
         setTimeout(initializeBlog, 100);
       }
@@ -366,9 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Use a small delay to ensure DOM is fully ready
   setTimeout(() => {
     const activePage = document.querySelector('[data-page].active');
-    console.log('Active page on load:', activePage?.dataset?.page);
     if (activePage && activePage.dataset.page === 'blog') {
-      console.log('Blog page is active on load, initializing...');
       initializeBlog();
     }
   }, 100);
