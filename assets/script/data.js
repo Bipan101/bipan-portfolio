@@ -8,11 +8,11 @@ const frameworksLanguagesExpertiesButtons = [
   { name: "C/C++", icon: "https://img.icons8.com/color/48/000000/c-plus-plus-logo.png" },
 ];
 
-const paymentGatewayExpertiesButtons = [
-  { name: "Stripe", icon: "https://img.icons8.com/fluency/48/000000/stripe.png" },
-  { name: "PayPal", icon: "https://img.icons8.com/color/48/000000/paypal.png" },
-  { name: "Razorpay", icon: "https://razorpay.com/favicon.png" },
-];
+// const paymentGatewayExpertiesButtons = [
+//   { name: "Stripe", icon: "https://img.icons8.com/fluency/48/000000/stripe.png" },
+//   { name: "PayPal", icon: "https://img.icons8.com/color/48/000000/paypal.png" },
+//   { name: "Razorpay", icon: "https://razorpay.com/favicon.png" },
+// ];
 
 const plugnisExpertiesButtons = [
   { name: "WordPress", icon: "https://img.icons8.com/color/48/000000/wordpress.png" },
