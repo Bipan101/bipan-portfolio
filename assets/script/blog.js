@@ -12,6 +12,8 @@ const MEDIUM_WORKER_ENDPOINT =
     ? 'http://127.0.0.1:8787/posts'
     : null);
 
+let blogFetchInFlight = null;
+
 function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -173,9 +175,14 @@ function showError() {
 function displayBlogPosts(posts) {
   const blogList = document.getElementById('blog-posts-list');
   const loadingElement = document.getElementById('blog-loading');
+  const errorElement = document.getElementById('blog-error');
 
   if (loadingElement) {
     loadingElement.style.display = 'none';
+  }
+
+  if (errorElement) {
+    errorElement.style.display = 'none';
   }
 
   if (!blogList) {
@@ -205,29 +212,45 @@ async function initializeBlog() {
     return;
   }
 
-  try {
-    let posts = [];
-
-    try {
-      posts = await fetchMediumPostsViaWorker();
-    } catch (workerError) {
-      console.warn('Medium worker fetch failed, falling back to RSS JSON.', workerError);
-      posts = await fetchMediumPostsViaRssJson();
-    }
-
-    displayBlogPosts(posts);
-  } catch (error) {
-    console.error('Blog initialization failed:', error);
-    showError();
+  if (blogFetchInFlight) {
+    return blogFetchInFlight;
   }
+
+  blogFetchInFlight = (async () => {
+    try {
+      let posts = [];
+
+      if (MEDIUM_WORKER_ENDPOINT) {
+        try {
+          posts = await fetchMediumPostsViaWorker();
+        } catch (workerError) {
+          console.warn('Medium worker fetch failed, falling back to RSS JSON.', workerError);
+          posts = await fetchMediumPostsViaRssJson();
+        }
+      } else {
+        posts = await fetchMediumPostsViaRssJson();
+      }
+
+      displayBlogPosts(posts);
+    } catch (error) {
+      console.error('Blog initialization failed:', error);
+      showError();
+    } finally {
+      blogFetchInFlight = null;
+    }
+  })();
+
+  return blogFetchInFlight;
 }
 
 window.refreshBlogPosts = function () {
   const blogList = document.getElementById('blog-posts-list');
   const loadingElement = document.getElementById('blog-loading');
+  const errorElement = document.getElementById('blog-error');
 
   if (blogList) blogList.innerHTML = '';
   if (loadingElement) loadingElement.style.display = 'flex';
+  if (errorElement) errorElement.style.display = 'none';
 
   initializeBlog();
 };

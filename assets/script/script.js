@@ -312,6 +312,7 @@ function createButtonListWithIcon(buttonNames, containerId) {
   buttonNames.forEach((item) => {
     const button = document.createElement("button");
     const icon = document.createElement("img");
+    const label = document.createElement("span");
     
     icon.className = "icon";
     icon.src = item.icon;
@@ -322,9 +323,12 @@ function createButtonListWithIcon(buttonNames, containerId) {
       console.warn(`Icon for ${item.name} could not be loaded from ${item.icon}`);
     };
 
+    label.className = "toolBtn-label";
+    label.textContent = item.name;
+
     button.className = "toolBtn";
-    button.textContent = item.name;
     button.appendChild(icon);
+    button.appendChild(label);
     container.appendChild(button);
   });
 }
