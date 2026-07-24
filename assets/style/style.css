@@ -1588,6 +1588,36 @@ main {
   font-weight: var(--fw-300);
 }
 
+.projects-footer {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.projects-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--sky-blue-crayola);
+  font-size: var(--fs-5);
+  font-weight: var(--fw-500);
+  text-decoration: none;
+  padding: 12px 24px;
+  border: 2px solid var(--sky-blue-crayola);
+  border-radius: 12px;
+  transition: var(--transition-1);
+}
+
+.projects-view-all:hover {
+  background: var(--sky-blue-crayola);
+  color: var(--smoky-black);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-2);
+}
+
+.projects-view-all ion-icon {
+  font-size: 20px;
+}
+
 /*-----------------------------------*\
   #BLOG
 \*-----------------------------------*/

@@ -9,14 +9,14 @@ This is my personal portfolio and I am a student, , web developer, AI/ML enthusi
 - Resume: Education, certifications, leadership roles
 - Skills: Filterable skill chips
 - Portfolio: Featured projects with descriptions
-- Blog: Latest Hashnode posts displayed dynamically
+- Blog: Latest Medium posts displayed dynamically
 - Contact: Email link + form
 
 ## Tech Stack
 HTML5, CSS3, JavaScript, Ionicons, Cloudflare Workers
 
 ## Blog Integration
-Latest Hashnode posts are fetched securely through a Cloudflare Worker, ensuring the API token is never exposed on the frontend.
+Latest Medium posts are fetched securely through a Cloudflare Worker, ensuring the feed is parsed server-side and never exposed to the frontend.
 
 ## Local Development
 1. Serve the site with a local server (VS Code Live Server, etc.)

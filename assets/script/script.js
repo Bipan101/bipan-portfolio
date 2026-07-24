@@ -19,7 +19,6 @@ const testimonialsItem = document.querySelectorAll("[data-testimonials-item]");
 const modalContainer = document.querySelector("[data-modal-container]");
 const modalCloseBtn = document.querySelector("[data-modal-close-btn]");
 const overlay = document.querySelector("[data-overlay]");
-const testimonialImg = document.querySelector("[data-testimonials-avatar]");
 const testimonialsList = document.querySelector(".testimonials-list");
 const testimonialScrollButtons = document.querySelectorAll("[data-scroll-btn]");
 
@@ -150,10 +149,7 @@ if (dropdownBtn && dropdownMenu) {
     e.preventDefault();
     e.stopPropagation();
     
-    const isActive = dropdownMenu.classList.contains("active");
     dropdownMenu.classList.toggle("active");
-    
-    console.log("Dropdown toggled:", !isActive); // Debug
   });
 
   // Close dropdown when clicking outside
@@ -170,8 +166,6 @@ if (dropdownBtn && dropdownMenu) {
       e.stopPropagation();
     });
   }
-} else {
-  console.error("Dropdown not found:", { btn: dropdownBtn, menu: dropdownMenu }); // Debug
 }
 
 // add event to all nav link (including dropdown links)
@@ -202,55 +196,93 @@ for (let i = 0; i < navigationLinks.length; i++) {
 }
 
 // Call the function with different lists and container IDs
-// HTML5
+// Machine Learning
 createButtonListWithIcon(
-  [{ name: "HTML5", icon: "https://img.icons8.com/color/48/000000/html-5--v1.png" }],
+  [
+    { name: "Scikit-learn", icon: "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" },
+    { name: "Model Training", icon: "https://img.icons8.com/color/48/artificial-intelligence.png" },
+    { name: "Classification", icon: "https://img.icons8.com/color/48/combo-chart--v1.png" },
+    { name: "Regression", icon: "https://img.icons8.com/color/48/line-chart.png" }
+  ],
   "html5Container"
 );
 
-// CSS3
+// Deep Learning
 createButtonListWithIcon(
-  [{ name: "CSS3", icon: "https://img.icons8.com/color/48/000000/css3.png" }],
+  [
+    { name: "TensorFlow", icon: "https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" },
+    { name: "Keras", icon: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Keras_logo.svg" },
+    { name: "PyTorch", icon: "https://www.vectorlogo.zone/logos/pytorch/pytorch-icon.svg" },
+    { name: "Neural Networks", icon: "https://img.icons8.com/color/48/mind-map.png" }
+  ],
   "cssContainer"
 );
 
-// JavaScript
+// Data Analysis
 createButtonListWithIcon(
-  [{ name: "JavaScript", icon: "https://img.icons8.com/color/48/000000/javascript--v1.png" }],
+  [
+    { name: "Pandas", icon: "https://upload.wikimedia.org/wikipedia/commons/e/ed/Pandas_logo.svg" },
+    { name: "NumPy", icon: "https://numpy.org/images/logo.svg" },
+    { name: "Data Cleaning", icon: "https://img.icons8.com/color/48/data-cleaning.png" },
+    { name: "Preprocessing", icon: "https://img.icons8.com/color/48/filter.png" }
+  ],
   "jsContainer"
 );
 
-// React JS
+// Data Visualization
 createButtonListWithIcon(
-  [{ name: "React JS", icon: "https://img.icons8.com/color/48/000000/react-native.png" }],
+  [
+    { name: "Matplotlib", icon: "https://upload.wikimedia.org/wikipedia/commons/8/84/Matplotlib_icon.svg" },
+    { name: "Seaborn", icon: "https://seaborn.pydata.org/_images/logo-mark-lightbg.svg" },
+    { name: "Plotting", icon: "https://img.icons8.com/color/48/bar-chart.png" },
+    { name: "EDA", icon: "https://img.icons8.com/color/48/combo-chart--v1.png" }
+  ],
   "reactContainer"
 );
 
-// Python
+// Python & Backend
 createButtonListWithIcon(
-  [{ name: "Python", icon: "https://img.icons8.com/color/48/000000/python--v1.png" }],
+  [
+    { name: "Python", icon: "https://img.icons8.com/color/48/000000/python--v1.png" },
+    { name: "Django", icon: "https://static.djangoproject.com/img/logos/django-logo-negative.svg" },
+    { name: "FastAPI", icon: "https://fastapi.tiangolo.com/img/icon-white.svg" },
+    { name: "REST APIs", icon: "https://img.icons8.com/color/48/api-settings.png" }
+  ],
   "pythonContainer"
 );
 
-// C/C++
+// Frontend Development
 createButtonListWithIcon(
-  [{ name: "C/C++", icon: "https://img.icons8.com/color/48/000000/c-plus-plus-logo.png" }],
+  [
+    { name: "JavaScript", icon: "https://img.icons8.com/color/48/000000/javascript--v1.png" },
+    { name: "React JS", icon: "https://img.icons8.com/color/48/000000/react-native.png" },
+    { name: "HTML5", icon: "https://img.icons8.com/color/48/000000/html-5--v1.png" },
+    { name: "CSS3", icon: "https://img.icons8.com/color/48/000000/css3.png" }
+  ],
   "cppContainer"
 );
 
-// Bootstrap
+// Databases & SQL
 createButtonListWithIcon(
-  [{ name: "Bootstrap", icon: "https://img.icons8.com/color/48/000000/bootstrap.png" }],
+  [
+    { name: "SQL", icon: "https://img.icons8.com/color/48/database.png" },
+    { name: "MySQL", icon: "https://img.icons8.com/?size=48&id=UFXRpPFebwa2&format=png" },
+    { name: "Database Queries", icon: "https://img.icons8.com/color/48/sql.png" }
+  ],
   "bootstrapContainer"
 );
 
-// Tailwind CSS
+// Version Control
 createButtonListWithIcon(
-  [{ name: "Tailwind CSS", icon: "https://img.icons8.com/?size=48&id=EAUyKy3IwmqM&format=png" }],
+  [
+    { name: "Git", icon: "https://img.icons8.com/color/48/000000/git.png" },
+    { name: "GitHub", icon: "https://img.icons8.com/ios-glyphs/48/ffffff/github.png" },
+    { name: "Version Control", icon: "https://img.icons8.com/color/48/merge-git.png" }
+  ],
   "tailwindContainer"
 );
 
-// Figma & Canva
+// Design Tools
 createButtonListWithIcon(
   [
     { name: "Figma", icon: "https://static.figma.com/app/icon/1/favicon.svg" },
@@ -259,47 +291,14 @@ createButtonListWithIcon(
   "figmaContainer"
 );
 
-// Photoshop
+// Productivity Tools
 createButtonListWithIcon(
-  [{ name: "Photoshop", icon: "https://img.icons8.com/?size=48&id=13677&format=png" }],
+  [
+    { name: "Microsoft Office", icon: "https://img.icons8.com/color/48/microsoft-office-2019.png" },
+    { name: "Google Workspace", icon: "https://img.icons8.com/color/48/google-logo.png" }
+  ],
   "photoshopContainer"
 );
-
-// Other expertise sections - keep these for future use
-/*
-createButtonListWithIcon(
-  paymentGatewayExpertiesButtons,
-  "paymentGatewayExperties"
-);
-createButtonListWithIcon(plugnisExpertiesButtons, "plugnisExperties");
-createButtonListWithIcon(tootlUtilitiesExpertiesButtons, "tootlUtilitiesExperties");
-createButtonListWithIcon(
-  versionControlExpertiesButtons,
-  "versionControlExperties"
-);
-createButtonListWithIcon(databaseExpertiesButtons, "databaseExperties");
-createButtonListWithIcon(apiServicesExpertiesButtons, "apiServicesExperties");
-createButtonListWithIcon(codeReviewExpertiesButtons, "codeReviewExperties");
-createButtonListWithIcon(deploymentExpertiesButtons, "deploymentExperties");
-createButtonListWithIcon(
-  crashReportingExpertiesButtons,
-  "crashReportingExperties"
-);
-createButtonListWithIcon(
-  projectManagementToolsExpertiesButtons,
-  "projectManagementToolsExperties"
-);
-createButtonListWithIcon(
-  stateManagementExpertiesButtons,
-  "stateManagementExperties"
-);
-createButtonListWithIcon(
-  upgradeServicesExpertiesButtons,
-  "upgradeServicesExperties"
-);
-createButtonListWithIcon(unitTestingExpertiesButtons, "unitTestingExperties");
-createButtonListWithIcon(uiUXToolsExpertiesButtons, "uiUXToolsExperties");
-*/
 
 function createButtonListWithIcon(buttonNames, containerId) {
   const container = document.getElementById(containerId);
