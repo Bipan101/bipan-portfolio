@@ -199,10 +199,10 @@ for (let i = 0; i < navigationLinks.length; i++) {
 // Machine Learning
 createButtonListWithIcon(
   [
-    { name: "Scikit-learn", icon: "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" },
-    { name: "Model Training", icon: "https://img.icons8.com/color/48/artificial-intelligence.png" },
-    { name: "Classification", icon: "https://img.icons8.com/color/48/combo-chart--v1.png" },
-    { name: "Regression", icon: "https://img.icons8.com/color/48/line-chart.png" }
+    { name: "Scikit-learn", icon: "assets/images/tools/scikit-learn.svg" },
+    { name: "Model Training", icon: "assets/images/tools/model-training.png" },
+    { name: "Classification", icon: "assets/images/tools/classification.png" },
+    { name: "Regression", icon: "assets/images/tools/regression.png" }
   ],
   "html5Container"
 );
