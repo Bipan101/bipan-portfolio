@@ -1,57 +1,8 @@
-const HASHNODE_API_ENDPOINT = 'https://gql.hashnode.com';
-const DEFAULT_USERNAME = 'bipan101';
+import { XMLParser } from 'fast-xml-parser';
 
-const GET_PUBLICATION_QUERY = `
-  query GetUserPublication($username: String!) {
-    user(username: $username) {
-      publications(first: 10) {
-        edges {
-          node {
-            id
-            title
-            url
-          }
-        }
-      }
-    }
-  }
-`;
-
-const GET_POSTS_QUERY = `
-  query Publication($host: String!) {
-    publication(host: $host) {
-      posts(first: 50) {
-        edges {
-          node {
-            id
-            title
-            subtitle
-            brief
-            slug
-            url
-            coverImage {
-              url
-            }
-            publishedAt
-            updatedAt
-            readTimeInMinutes
-            reactionCount
-            responseCount
-            tags {
-              id
-              name
-              slug
-            }
-            author {
-              name
-              username
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+const DEFAULT_MEDIUM_USERNAME = 'bipan101';
+const DEFAULT_FEED_BASE = 'https://medium.com/feed/@';
+const DEFAULT_FALLBACK_IMAGE = 'https://miro.medium.com/v2/resize:fit:1200/1*9_rb_rMrKcz_91rJopF3_w.jpeg';
 
 const ALLOWED_ORIGINS = [
 	'https://bipanneupane.com.np',
@@ -62,6 +13,15 @@ const ALLOWED_ORIGINS = [
 	'http://127.0.0.1:5500',
 	'http://127.0.0.1:8787',
 ];
+
+const parser = new XMLParser({
+	ignoreAttributes: false,
+	attributeNamePrefix: '@_',
+	trimValues: true,
+	parseTagValue: false,
+	removeNSPrefix: false,
+	isArray: (name) => ['item', 'category'].includes(name),
+});
 
 const buildCorsHeaders = (request, overrides = {}) => {
 	const originHeader = request.headers.get('Origin');
@@ -88,55 +48,98 @@ const jsonResponse = (body, init = {}, request = null) => {
 	});
 };
 
-const hashnodeRequest = async (query, variables, token) => {
-	const response = await fetch(HASHNODE_API_ENDPOINT, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
-		},
-		body: JSON.stringify({ query, variables }),
-	});
+const decodeHtmlEntities = (value = '') =>
+	value
+		.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+		.replace(/&amp;/g, '&')
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/&quot;/g, '"')
+		.replace(/&#39;/g, "'")
+		.trim();
 
-	const payload = await response.json();
+const stripHtml = (value = '') => decodeHtmlEntities(value).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
-	if (!response.ok || payload.errors) {
-		const message = payload.errors?.[0]?.message || `Hashnode error (${response.status})`;
-		throw new Error(message);
+const toArray = (value) => {
+	if (!value) {
+		return [];
 	}
 
-	return payload.data;
+	return Array.isArray(value) ? value : [value];
 };
 
-const getPublications = async (username, token) => {
-	const data = await hashnodeRequest(GET_PUBLICATION_QUERY, { username }, token);
-	return data?.user?.publications?.edges?.map((edge) => edge.node).filter(Boolean) || [];
+const buildFeedUrl = (username) => `${DEFAULT_FEED_BASE}${encodeURIComponent(username)}`;
+
+const extractImageUrl = (item) => {
+	const content = item['content:encoded'] || item.description || '';
+	const imageMatch = content.match(/<img[^>]+src="([^"]+)"/i);
+	if (imageMatch?.[1]) {
+		return imageMatch[1];
+	}
+
+	const thumbnail = item['media:thumbnail']?.['@_url'] || item.thumbnail?.['@_url'];
+	return thumbnail || DEFAULT_FALLBACK_IMAGE;
 };
 
-const getPostsForHost = async (host, token) => {
-	const data = await hashnodeRequest(GET_POSTS_QUERY, { host }, token);
-	return data?.publication?.posts?.edges?.map((edge) => edge.node).filter(Boolean) || [];
+const estimateReadTime = (item) => {
+	const content = stripHtml(item['content:encoded'] || item.description || '');
+	if (!content) {
+		return null;
+	}
+
+	const words = content.split(/\s+/).filter(Boolean).length;
+	return Math.max(1, Math.round(words / 200));
 };
 
-const sanitizePosts = (posts) => {
-	return posts
+const sanitizePosts = (items) => {
+	return toArray(items)
 		.filter(Boolean)
-		.map((post) => ({
-			id: post.id,
-			title: post.title,
-			subtitle: post.subtitle,
-			brief: post.brief,
-			slug: post.slug,
-			url: post.url,
-			coverImage: post.coverImage,
-			publishedAt: post.publishedAt,
-			updatedAt: post.updatedAt,
-			readTimeInMinutes: post.readTimeInMinutes,
-			reactionCount: post.reactionCount,
-			responseCount: post.responseCount,
-			tags: post.tags,
-			author: post.author,
-		}));
+		.map((item, index) => {
+			const title = decodeHtmlEntities(item.title || 'Untitled');
+			const url = decodeHtmlEntities(item.link || '');
+			const descriptionText = stripHtml(item.description || item['content:encoded'] || '');
+			const categories = toArray(item.category).map((category) => ({
+				id: decodeHtmlEntities(String(category)).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+				name: decodeHtmlEntities(String(category)),
+				slug: decodeHtmlEntities(String(category)).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+			}));
+
+			return {
+				id: decodeHtmlEntities(item.guid?.['#text'] || item.guid || url || `${title}-${index}`),
+				title,
+				subtitle: descriptionText,
+				brief: descriptionText,
+				slug: url ? new URL(url).pathname.split('/').filter(Boolean).pop() || '' : '',
+				url,
+				coverImage: { url: extractImageUrl(item) },
+				publishedAt: item.pubDate ? new Date(item.pubDate).toISOString() : null,
+				updatedAt: item.pubDate ? new Date(item.pubDate).toISOString() : null,
+				readTimeInMinutes: estimateReadTime(item),
+				reactionCount: null,
+				responseCount: null,
+				tags: categories,
+				author: {
+					name: decodeHtmlEntities(item['dc:creator'] || 'Bipan Neupane'),
+					username: DEFAULT_MEDIUM_USERNAME,
+				},
+			};
+		})
+		.filter((post) => post.url);
+};
+
+const fetchMediumFeed = async (username) => {
+	const response = await fetch(buildFeedUrl(username), {
+		headers: {
+			'Accept': 'application/rss+xml, application/xml;q=0.9, text/xml;q=0.8',
+			'User-Agent': 'bipan-portfolio-worker/1.0',
+		},
+	});
+
+	if (!response.ok) {
+		throw new Error(`Medium feed error (${response.status})`);
+	}
+
+	return response.text();
 };
 
 export default {
@@ -159,47 +162,20 @@ export default {
 			return jsonResponse({ error: 'Method Not Allowed' }, { status: 405 }, request);
 		}
 
-		const token = env.HASHNODE_TOKEN;
-		if (!token) {
-			return jsonResponse({ error: 'Missing HASHNODE_TOKEN secret' }, { status: 500 }, request);
-		}
-
-		const username = url.searchParams.get('username') || env.HASHNODE_USERNAME || DEFAULT_USERNAME;
+		const username = url.searchParams.get('username') || env.MEDIUM_USERNAME || DEFAULT_MEDIUM_USERNAME;
 
 		try {
-			const publications = await getPublications(username, token);
-			if (!publications.length) {
-				return jsonResponse({ posts: [] }, {}, request);
-			}
-
-			const postsByPublication = await Promise.all(
-				publications.map(async (publication) => {
-					try {
-						const publicationUrl = new URL(publication.url);
-						return await getPostsForHost(publicationUrl.hostname, token);
-					} catch (error) {
-						console.error('Failed to fetch posts for publication:', publication.url, error.message);
-						return [];
-					}
-				})
-			);
-
-			const allPosts = sanitizePosts(postsByPublication.flat());
-			const uniquePostsMap = new Map();
-			allPosts.forEach((post) => {
-				if (!uniquePostsMap.has(post.id)) {
-					uniquePostsMap.set(post.id, post);
-				}
-			});
-
-			const sortedPosts = Array.from(uniquePostsMap.values()).sort(
+			const feedXml = await fetchMediumFeed(username);
+			const parsed = parser.parse(feedXml);
+			const items = parsed?.rss?.channel?.item || [];
+			const sortedPosts = sanitizePosts(items).sort(
 				(a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
 			);
 
 			return jsonResponse({ posts: sortedPosts }, {}, request);
 		} catch (error) {
-			console.error('Hashnode proxy error:', error.message);
-			return jsonResponse({ error: 'Unable to fetch Hashnode posts at the moment.' }, { status: 502 }, request);
+			console.error('Medium proxy error:', error.message);
+			return jsonResponse({ error: 'Unable to fetch Medium posts at the moment.' }, { status: 502 }, request);
 		}
 	},
 };

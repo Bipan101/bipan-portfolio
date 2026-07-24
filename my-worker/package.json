@@ -12,5 +12,8 @@
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
 		"vitest": "~3.2.0",
 		"wrangler": "^4.56.0"
+	},
+	"dependencies": {
+		"fast-xml-parser": "^5.10.1"
 	}
 }
